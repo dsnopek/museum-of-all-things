@@ -121,6 +121,11 @@ func _reset_custom_door(title):
 
 func reset_to_lobby():
   _set_current_room_title("$Lobby")
+  for exhibit_key in _exhibits:
+    if exhibit_key == "$Lobby":
+      _exhibits[exhibit_key]['exhibit'].visible = true
+    else:
+      _exhibits[exhibit_key]['exhibit'].visible = false
 
 func _set_current_room_title(title):
   if title == "$Lobby":

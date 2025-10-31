@@ -113,8 +113,7 @@ func generate(
   # init grid
   _grid = grid_wrapper.instantiate()
   add_child(_grid)
-  # @todo Do we need _raw_grid?
-  _raw_grid = _grid
+  _raw_grid = _grid._grid
 
   # init rng
   _rng = RandomNumberGenerator.new()
