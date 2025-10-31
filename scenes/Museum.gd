@@ -462,7 +462,7 @@ func _on_wikidata_complete(entity, ctx):
     _queue_item(ctx.title, _on_finished_exhibit.bind(ctx))
 
 func _on_commons_images_complete(images, ctx):
-  if len(images) > 0 and ctx.exhibit.has_item_slot():
+  if len(images) > 0:
     var item_data = ItemProcessor.commons_images_to_items(ctx.title, images, ctx.extra_text)
     for item in item_data:
       _queue_item(ctx.title, _add_item.bind(
