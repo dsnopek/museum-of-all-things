@@ -1,7 +1,6 @@
 extends Node3D
 
-const TiledExhibitGenerator = preload("res://scenes/TiledExhibitGenerator.gd")
-const TiledExhibitGeneratorScene = preload("res://scenes/TiledExhibitGenerator.tscn")
+const TiledExhibitGenerator = preload("res://scenes/TiledExhibitGenerator.tscn")
 @onready var StaticData = preload("res://assets/resources/lobby_data.tres")
 var _lobby_data_path = "res://assets/resources/lobby_data.tres"
 
@@ -153,11 +152,6 @@ func _prepare_halls_for_teleport(from_hall, to_hall, entry_to_exit=false):
   if not is_instance_valid(from_hall) or not is_instance_valid(to_hall):
     return
 
-  #if entry_to_exit:
-  #  _toggle_exhibit_visibility(from_hall.to_title, from_hall.from_title)
-  #else:
-  #  _toggle_exhibit_visibility(from_hall.from_title, from_hall.to_title)
-
   from_hall.entry_door.set_open(false)
   from_hall.exit_door.set_open(false)
   to_hall.entry_door.set_open(false, true)
@@ -173,12 +167,8 @@ func _prepare_halls_for_teleport(from_hall, to_hall, entry_to_exit=false):
   timer.start(HallDoor.animation_duration)
 
 func _toggle_exhibit_visibility(hide_title: String, show_title: String) -> void:
-  print("DRS: Closed %s and opened %s" % [hide_title, show_title])
-
-  # @todo Make it possible to hide the lobby
-  if hide_title != '$Lobby':
-    var old_exhibit = _exhibits[hide_title]['exhibit']
-    old_exhibit.visible = false
+  var old_exhibit = _exhibits[hide_title]['exhibit']
+  old_exhibit.visible = false
 
   var new_exhibit = _exhibits[show_title]['exhibit']
   new_exhibit.visible = true
@@ -377,11 +367,11 @@ func _on_fetch_complete(_titles, context):
   var extra_text = data.extra_text
   var exhibit_height = _get_free_exhibit_height()
 
-  var new_exhibit = TiledExhibitGeneratorScene.instantiate()
+  var new_exhibit = TiledExhibitGenerator.instantiate()
   add_child(new_exhibit)
 
   new_exhibit.exit_added.connect(_on_exit_added.bind(doors, backlink, new_exhibit, hall))
-  new_exhibit.generate(_grid, {
+  new_exhibit.generate({
     "start_pos": Vector3.UP * exhibit_height,
     "min_room_dimension": min_room_dimension,
     "max_room_dimension": max_room_dimension,
