@@ -1,6 +1,7 @@
 extends Node3D
 
-@onready var TiledExhibitGenerator = preload("res://scenes/TiledExhibitGenerator.tscn")
+const TiledExhibitGenerator = preload("res://scenes/TiledExhibitGenerator.gd")
+const TiledExhibitGeneratorScene = preload("res://scenes/TiledExhibitGenerator.tscn")
 @onready var StaticData = preload("res://assets/resources/lobby_data.tres")
 var _lobby_data_path = "res://assets/resources/lobby_data.tres"
 
@@ -49,6 +50,18 @@ func _ready() -> void:
   GlobalMenuEvents.reset_custom_door.connect(_reset_custom_door)
   GlobalMenuEvents.set_custom_door.connect(_set_custom_door)
   GlobalMenuEvents.set_language.connect(_on_change_language)
+
+  var tmp_timer := Timer.new()
+  tmp_timer.autostart = true
+  tmp_timer.timeout.connect(_check_player_exhibit)
+  add_child(tmp_timer)
+
+func _check_player_exhibit() -> void:
+  for exhibit_key in _exhibits:
+    var exhibit = _exhibits[exhibit_key]['exhibit']
+    if exhibit is TiledExhibitGenerator:
+      if exhibit.is_position_in_exhibit(_player.global_position):
+        print("PLAYER IN IN ", exhibit.title)
 
 func _get_free_exhibit_height() -> int:
   var height = _starting_height
@@ -152,6 +165,11 @@ func _prepare_halls_for_teleport(from_hall, to_hall, entry_to_exit=false):
   if not is_instance_valid(from_hall) or not is_instance_valid(to_hall):
     return
 
+  #if entry_to_exit:
+  #  _toggle_exhibit_visibility(from_hall.to_title, from_hall.from_title)
+  #else:
+  #  _toggle_exhibit_visibility(from_hall.from_title, from_hall.to_title)
+
   from_hall.entry_door.set_open(false)
   from_hall.exit_door.set_open(false)
   to_hall.entry_door.set_open(false, true)
@@ -166,7 +184,25 @@ func _prepare_halls_for_teleport(from_hall, to_hall, entry_to_exit=false):
   )
   timer.start(HallDoor.animation_duration)
 
+func _toggle_exhibit_visibility(hide_title: String, show_title: String) -> void:
+  print("DRS: Closed %s and opened %s" % [hide_title, show_title])
+
+  # @todo Make it possible to hide the lobby
+  if hide_title != '$Lobby':
+    var old_exhibit = _exhibits[hide_title]['exhibit']
+    old_exhibit.visible = false
+
+  var new_exhibit = _exhibits[show_title]['exhibit']
+  new_exhibit.visible = true
+
 func _teleport_player(from_hall, to_hall, entry_to_exit=false):
+  var valid_hall = from_hall if is_instance_valid(from_hall) else (to_hall if is_instance_valid(to_hall) else null)
+  if valid_hall:
+    if entry_to_exit:
+      _toggle_exhibit_visibility(valid_hall.to_title, valid_hall.from_title)
+    else:
+      _toggle_exhibit_visibility(valid_hall.from_title, valid_hall.to_title)
+
   if is_instance_valid(from_hall) and is_instance_valid(to_hall):
     var pos = _player.global_position if not _xr else _player.get_node("XRCamera3D").global_position
     var distance = (from_hall.position - pos).length()
@@ -311,6 +347,9 @@ func _on_exit_added(exit, doors, backlink, new_exhibit, hall):
   if is_instance_valid(hall) and backlink and exit.to_title == hall.to_title:
     _link_halls(hall, exit)
 
+func _on_exhibit_door_changed(title: String, opened: bool) -> void:
+  print("Door to %s has %s" % [title, "opened" if opened else "closed"])
+
 func _erase_exhibit(key):
   if OS.is_debug_build():
     print("erasing exhibit ", key)
@@ -353,10 +392,11 @@ func _on_fetch_complete(_titles, context):
   var extra_text = data.extra_text
   var exhibit_height = _get_free_exhibit_height()
 
-  var new_exhibit = TiledExhibitGenerator.instantiate()
+  var new_exhibit = TiledExhibitGeneratorScene.instantiate()
   add_child(new_exhibit)
 
   new_exhibit.exit_added.connect(_on_exit_added.bind(doors, backlink, new_exhibit, hall))
+  new_exhibit.door_changed.connect(_on_exhibit_door_changed)
   new_exhibit.generate(_grid, {
     "start_pos": Vector3.UP * exhibit_height,
     "min_room_dimension": min_room_dimension,

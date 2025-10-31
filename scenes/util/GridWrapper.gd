@@ -41,6 +41,9 @@ func get_cell_item(pos):
 func get_orthogonal_index_from_basis(basis):
   return _grid.get_orthogonal_index_from_basis(basis)
 
+func global_to_map(global_pos: Vector3) -> Vector3i:
+  return _grid.local_to_map(_grid.to_local(global_pos))
+
 const RESERVED_VAL = 1
 func reserve_zone(zone):
   _reserved_zones.append(zone)

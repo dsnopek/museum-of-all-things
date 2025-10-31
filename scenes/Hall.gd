@@ -50,6 +50,8 @@ var to_pos
 var to_dir
 var linked_hall
 
+signal door_changed(title: String, opened: bool)
+
 static var UP = 1
 static var FLAT = 0
 static var DOWN = -1
@@ -178,6 +180,9 @@ func init(grid, from_title, to_title, hall_start, hall_dir, _hall_type=[true, FL
   entry_door.set_open(true, true)
   exit_door.set_open(false, true)
 
+  entry_door.door_changed.connect(_handle_door_changed.bind(from_title, "entry"))
+  exit_door.door_changed.connect(_handle_door_changed.bind(to_title, "exit"))
+
   var center_pos = Util.gridToWorld((from_pos + to_pos) / 2) + Vector3(0, 4, 0) - position
 
   _detector.position = center_pos
@@ -200,3 +205,9 @@ func _on_direction_changed(direction):
     emit_signal("on_player_toward_exit")
   else:
     emit_signal("on_player_toward_entry")
+
+func _handle_door_changed(opened: bool, title: String, type: String) -> void:
+  if type == "exit":
+    return
+  print("DRS: ", self, " - ", title, " - ", opened, " - ", type)
+  door_changed.emit(title, opened)
