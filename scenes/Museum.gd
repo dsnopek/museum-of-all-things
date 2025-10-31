@@ -51,18 +51,6 @@ func _ready() -> void:
   GlobalMenuEvents.set_custom_door.connect(_set_custom_door)
   GlobalMenuEvents.set_language.connect(_on_change_language)
 
-  var tmp_timer := Timer.new()
-  tmp_timer.autostart = true
-  tmp_timer.timeout.connect(_check_player_exhibit)
-  add_child(tmp_timer)
-
-func _check_player_exhibit() -> void:
-  for exhibit_key in _exhibits:
-    var exhibit = _exhibits[exhibit_key]['exhibit']
-    if exhibit is TiledExhibitGenerator:
-      if exhibit.is_position_in_exhibit(_player.global_position):
-        print("PLAYER IN IN ", exhibit.title)
-
 func _get_free_exhibit_height() -> int:
   var height = _starting_height
   while _used_exhibit_heights.has(height):
@@ -347,9 +335,6 @@ func _on_exit_added(exit, doors, backlink, new_exhibit, hall):
   if is_instance_valid(hall) and backlink and exit.to_title == hall.to_title:
     _link_halls(hall, exit)
 
-func _on_exhibit_door_changed(title: String, opened: bool) -> void:
-  print("Door to %s has %s" % [title, "opened" if opened else "closed"])
-
 func _erase_exhibit(key):
   if OS.is_debug_build():
     print("erasing exhibit ", key)
@@ -396,7 +381,6 @@ func _on_fetch_complete(_titles, context):
   add_child(new_exhibit)
 
   new_exhibit.exit_added.connect(_on_exit_added.bind(doors, backlink, new_exhibit, hall))
-  new_exhibit.door_changed.connect(_on_exhibit_door_changed)
   new_exhibit.generate(_grid, {
     "start_pos": Vector3.UP * exhibit_height,
     "min_room_dimension": min_room_dimension,

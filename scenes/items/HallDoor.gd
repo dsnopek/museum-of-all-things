@@ -8,8 +8,6 @@ static var animation_duration = 0.25
 var _open_pos = Vector3(0, 6.5, 0)
 var _closed_pos = Vector3(0, 2, 0)
 
-signal door_changed(opened: bool)
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
   pass # Replace with function body.
@@ -35,8 +33,6 @@ func set_open(open = true, instant = false):
       $OpenSound.play()
   else:
     _door.position = _open_pos if open else _closed_pos
-
-  door_changed.emit(open)
 
 @onready var label_pivot = $Door/LabelPivot
 @onready var top_label = $Door/LabelPivot/Label1

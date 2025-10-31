@@ -37,8 +37,6 @@ var _exit_limit
 var _min_room_dimension
 var _max_room_dimension
 
-signal door_changed(title: String, opened: bool)
-
 func _rand_dim():
   return _rng.randi_range(_min_room_dimension, _max_room_dimension)
 
@@ -96,16 +94,6 @@ func get_item_slot():
   else:
     return null
 
-func is_position_in_exhibit(pos: Vector3) -> bool:
-  var grid_pos = _grid.global_to_map(pos)
-  for room_key in _room_list:
-    var room = _room_list[room_key]
-    var room_aabb := room_to_aabb(room['center'], room['width'], room['length'])
-    if room_aabb.has_point(grid_pos):
-      return true
-
-  return false
-
 func generate(
     grid,
     params,
@@ -152,7 +140,6 @@ func generate(
 
   # initialize public fields
   entry = starting_hall
-  entry.door_changed.connect(_emit_door_changed)
 
   # now we create the first room
   var room_width = _rand_dim()
@@ -408,7 +395,6 @@ func decorate_wall_tile(pos):
         hall_dir,
         hall_type
       )
-      new_hall.door_changed.connect(_emit_door_changed)
 
       exits.append(new_hall)
       emit_signal("exit_added", new_hall)
@@ -421,10 +407,6 @@ func room_to_bounds(center, width, length):
     Vector3(center.x - width / 2, center.y, center.z - length / 2),
     Vector3(center.x + width / 2 - ((width + 1) % 2), center.y, center.z + length / 2 + ((length + 1) % 2))
   ]
-
-func room_to_aabb(center, width, length) -> AABB:
-  var start := Vector3(center.x - width / 2, center.y - 1, center.z - length / 2)
-  return AABB(start, Vector3(width, 1.0, length))
 
 func carve_room(corner1, corner2, y):
   var lx = corner1.x
@@ -459,6 +441,3 @@ func overlaps_room(corner1, corner2, y):
       if not Util.safe_overwrite(_grid, Vector3(x, y, z)):
         return true
   return false
-
-func _emit_door_changed(title: String, opened: bool) -> void:
-  door_changed.emit(title, opened)
