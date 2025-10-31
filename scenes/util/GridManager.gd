@@ -4,7 +4,10 @@ extends Node
 var _cells := {}
 
 func set_cell_item(pos: Vector3i, item: int, _orientation: int) -> void:
-  _cells[pos] = item
+  if item == -1:
+    _cells.erase(pos)
+  else:
+    _cells[pos] = item
 
 func get_cell_item(pos: Vector3i) -> int:
   return _cells.get(pos, -1)
