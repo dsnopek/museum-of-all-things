@@ -1,10 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://dn526eij58wfs"]
+[gd_scene load_steps=15 format=3 uid="uid://dn526eij58wfs"]
 
 [ext_resource type="Script" uid="uid://b4itlodcpju0d" path="res://scenes/XRRoot.gd" id="1_t4l57"]
 [ext_resource type="PackedScene" uid="uid://b5x50p37g7pwi" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_v48yd"]
-[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="3_5q6px"]
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="4_6uron"]
-[ext_resource type="PackedScene" uid="uid://dkqks7e8gessd" path="res://scenes/util/PerfMonitor.tscn" id="4_au42f"]
 [ext_resource type="Material" uid="uid://b20jn7y6kh1ct" path="res://assets/textures/player_ghost.tres" id="4_jb2jl"]
 [ext_resource type="Script" uid="uid://oar6baydvvcw" path="res://addons/godot-xr-tools/player/player_body.gd" id="4_l0d4h"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="5_wqppd"]
@@ -31,12 +29,6 @@ script = ExtResource("1_t4l57")
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("1_v48yd")]
-
-[node name="PerformanceLayer" parent="XROrigin3D/XRCamera3D" instance=ExtResource("3_5q6px")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16473, -4.12387)
-scene = ExtResource("4_au42f")
-unshaded = true
-scene_properties_keys = PackedStringArray("PerfMonitor.gd")
 
 [node name="XRController3D_left" type="XRController3D" parent="XROrigin3D"]
 tracker = &"left_hand"
