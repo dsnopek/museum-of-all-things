@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://f0jxppprskc3"]
+[gd_scene load_steps=5 format=3 uid="uid://f0jxppprskc3"]
 
 [ext_resource type="Theme" uid="uid://dgt5fjkytx07d" path="res://assets/resources/menu_theme.tres" id="1_cc3xp"]
 [ext_resource type="Script" uid="uid://pm3ql2l7i8d8" path="res://scenes/menu/DataSettings.gd" id="2_lrc5t"]
+[ext_resource type="PackedScene" uid="uid://cv3acpc23tjw0" path="res://scenes/menu/LanguageSelection.tscn" id="3_1jeoc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ktlel"]
 font_size = 64
@@ -26,6 +27,21 @@ label_settings = SubResource("LabelSettings_ktlel")
 [node name="Back" type="Button" parent="MainOptions"]
 layout_mode = 2
 text = "Back"
+
+[node name="LanguageOptions" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer7" type="Label" parent="LanguageOptions"]
+layout_mode = 2
+text = "
+"
+
+[node name="LanguageLabel" type="Label" parent="LanguageOptions"]
+layout_mode = 2
+text = "Language"
+
+[node name="Language" parent="LanguageOptions" instance=ExtResource("3_1jeoc")]
+layout_mode = 2
 
 [node name="CacheOptions" type="VBoxContainer" parent="."]
 layout_mode = 2
