@@ -69,7 +69,7 @@ func get_viewport_texture_with_mipmaps(subviewport: SubViewport, callback: Calla
       "callback": callback,
     })
   else:
-    _get_texture_data_rd(subviewport.get_texture(), callback)
+    RenderingServer.call_on_render_thread(_get_texture_data_rd.bind(subviewport.get_texture(), callback))
 
 func _create_image(width, height, format, data, callback) -> void:
   WorkQueue.add_item(MIPMAP_QUEUE, {
