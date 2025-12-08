@@ -161,7 +161,9 @@ func _ready() -> void:
   get_tree().node_added.connect(_on_node_added)
 
   # When using the compatibility renderer, we need to manage the number of lights.
-  if Util.is_compatibility_renderer():
+  var use_managed_lights: bool = Util.is_compatibility_renderer() or (Util.is_xr() and Util.is_mobile())
+  print("Managed lights: ", use_managed_lights)
+  if use_managed_lights:
     light_timer = Timer.new()
     add_child(light_timer)
     light_timer.wait_time = MANAGED_LIGHTS_FREQUENCY
