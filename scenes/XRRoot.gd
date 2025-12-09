@@ -6,6 +6,10 @@ const XRVirtualThumbstickScene = preload("res://scenes/XRVirtualThumbstick.tscn"
 @onready var left_controller_hand = $XROrigin3D/XRController3D_left/LeftHand
 @onready var right_controller = $XROrigin3D/XRController3D_right
 @onready var right_controller_hand = $XROrigin3D/XRController3D_right/RightHand
+@onready var left_hand_tracking = $XROrigin3D/HandTrackingLeft
+@onready var right_hand_tracking = $XROrigin3D/HandTrackingRight
+@onready var menu_label = $XROrigin3D/HandTrackingLeft/MenuLabel
+@onready var camera = $XROrigin3D/XRCamera3D
 @onready var xr_menu = $XROrigin3D/MenuPivot/XrMenu
 
 """
@@ -19,6 +23,8 @@ const TRIGGER_TELEPORT_ACTION = "trigger_click"
 const THUMBSTICK_TELEPORT_ACTION = "thumbstick_up"
 const REAL_ROTATION_ACTION = "primary"
 const VIRTUAL_ROTATION_ACTION = "virtual_rotation"
+const TRIGGER_POINTER_ACTION = "trigger_click"
+const PINCH_POINTER_ACTION = "pinch"
 
 const PRESSED_THRESHOLD := 0.8
 const RELEASED_THRESHOLD := 0.4
@@ -116,6 +122,13 @@ func _show_menu():
   xr_menu.enable_collision()
   xr_menu.visible = true
 
+func _process(_delta: float) -> void:
+  var vector_to_camera: Vector3 = (camera.position - left_hand_tracking.position).normalized()
+  if vector_to_camera.dot(left_hand_tracking.basis.z) > 0.9:
+    menu_label.visible = true
+  else:
+    menu_label.visible = false
+
 func _physics_process(delta: float) -> void:
   $XROrigin3D/XRToolsPlayerBody/FootstepPlayer.set_on_floor($XROrigin3D/XRToolsPlayerBody.is_on_floor())
 
@@ -159,20 +172,35 @@ func _on_xr_controller_3d_right_button_released(name: String) -> void:
 
 func _on_xr_controller_3d_left_input_float_changed(name: String, value: float) -> void:
   if name == "pinch":
-    #print("Left Pinch ", value)
     var xr_tracker: XRPositionalTracker = XRServer.get_tracker(left_controller.tracker)
     if _left_hand_pinching:
       if value < RELEASED_THRESHOLD:
         _left_hand_pinching = false
         xr_tracker.set_input(THUMBSTICK_TELEPORT_ACTION, false)
+        xr_tracker.set_input(PINCH_POINTER_ACTION, false)
+
+        if _left_virtual_thumbstick:
+          _left_virtual_thumbstick.release_virtual_thumbstick()
+          _left_virtual_thumbstick.queue_free()
+          _left_virtual_thumbstick = null
     else:
       if value > PRESSED_THRESHOLD:
         _left_hand_pinching = true
-        xr_tracker.set_input(THUMBSTICK_TELEPORT_ACTION, true)
+        if menu_label.visible:
+          _toggle_menu()
+        else:
+          if menu_active:
+            xr_tracker.set_input(PINCH_POINTER_ACTION, true)
+          else:
+            if movement_style == "teleportation":
+              xr_tracker.set_input(THUMBSTICK_TELEPORT_ACTION, true)
+            else:
+              _left_virtual_thumbstick = XRVirtualThumbstickScene.instantiate()
+              $XROrigin3D.add_child(_left_virtual_thumbstick)
+              _left_virtual_thumbstick.setup_virtual_thumbstick(left_controller, VIRTUAL_ROTATION_ACTION, Vector3(1.0, 0.0, 1.0))
 
 func _on_xr_controller_3d_right_input_float_changed(name: String, value: float) -> void:
   if name == "pinch":
-    #print("Right Pinch ", value)
     if _right_hand_pinching:
       if value < RELEASED_THRESHOLD:
         _right_hand_pinching = false
@@ -191,6 +219,8 @@ func _on_xr_controller_3d_right_input_float_changed(name: String, value: float) 
 
 func _on_hand_tracking_left_tracking_changed(tracking: bool) -> void:
   left_controller_hand.visible = not tracking
+  left_controller.get_node("FunctionPointer").active_button_action = PINCH_POINTER_ACTION if tracking else TRIGGER_POINTER_ACTION
+  %XRToolsMovementDirect.input_action = VIRTUAL_ROTATION_ACTION if tracking else REAL_ROTATION_ACTION
 
 func _on_hand_tracking_right_tracking_changed(tracking: bool) -> void:
   right_controller_hand.visible = not tracking

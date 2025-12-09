@@ -16,7 +16,19 @@ func setup_virtual_thumbstick(xr_controller: XRController3D, action: String, axi
   _action = action
   _axis_mask = axis_mask * Vector3(1.0, 0.0, 1.0)
 
-  global_transform = _get_controller_transform()
+  var t: Transform3D = _get_controller_transform()
+
+  # Flatten the Y axis, so it's level with the ground.
+  var z: Vector3 = t.basis.z
+  z.y = 0.0
+  z = z.normalized()
+  var x: Vector3 = t.basis.x
+  x.y = 0.0
+  x = x.normalized()
+  var y: Vector3 = z.cross(x)
+  t.basis = Basis(x, y, z)
+
+  global_transform = t
 
 func release_virtual_thumbstick() -> void:
   _xr_tracker.set_input(_action, Vector2())
@@ -34,7 +46,6 @@ func _process(_delta: float) -> void:
 
   if v.length() > DEADZONE:
     v = v / MAX_DISTANCE
-    print("primary: ", v)
-    _xr_tracker.set_input(_action, Vector2(v.x, v.z))
+    _xr_tracker.set_input(_action, Vector2(v.x, -v.z))
   else:
     _xr_tracker.set_input(_action, Vector2(0.0, 0.0))
