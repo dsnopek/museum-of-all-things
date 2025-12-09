@@ -238,8 +238,11 @@ environment/defaults/default_environment="res://assets/resources/default_env.tre
 [xr]
 
 openxr/reference_space=2
+openxr/extensions/hand_tracking=true
+openxr/extensions/hand_interaction_profile=true
 shaders/enabled=true
 openxr/enabled.openxr=true
 openxr/extensions/meta/composition_layer_settings=false
 openxr/foveation_level.openxr=3
 openxr/foveation_dynamic.openxr=true
+openxr/extensions/meta/hand_tracking_mesh=true
