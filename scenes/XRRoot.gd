@@ -2,12 +2,15 @@ extends Node3D
 
 const XRVirtualThumbstickScene = preload("res://scenes/XRVirtualThumbstick.tscn")
 
+@onready var player_body = $XROrigin3D/XRToolsPlayerBody
 @onready var left_controller = $XROrigin3D/XRController3D_left
 @onready var left_controller_hand = $XROrigin3D/XRController3D_left/LeftHand
 @onready var right_controller = $XROrigin3D/XRController3D_right
 @onready var right_controller_hand = $XROrigin3D/XRController3D_right/RightHand
 @onready var left_hand_tracking = $XROrigin3D/HandTrackingLeft
 @onready var right_hand_tracking = $XROrigin3D/HandTrackingRight
+@onready var menu_pivot = $XROrigin3D/MenuPivot
+@onready var menu_pivot_timer: Timer = $MenuPivotTimer
 @onready var menu_label = $XROrigin3D/HandTrackingLeft/MenuLabel
 @onready var camera = $XROrigin3D/XRCamera3D
 @onready var xr_menu = $XROrigin3D/MenuPivot/XrMenu
@@ -27,7 +30,7 @@ const TRIGGER_POINTER_ACTION = "trigger_click"
 const PINCH_POINTER_ACTION = "pinch"
 
 const PRESSED_THRESHOLD := 0.8
-const RELEASED_THRESHOLD := 0.4
+const RELEASED_THRESHOLD := 0.6
 
 var _thumbstick_teleport_pressed := false
 
@@ -121,13 +124,39 @@ func _show_menu():
   menu_active = true
   xr_menu.enable_collision()
   xr_menu.visible = true
+  menu_pivot.position = camera.position * Vector3(1.0, 0.0, 1.0)
+  menu_pivot.basis = _get_menu_pivot_basis()
+
+func _get_menu_pivot_basis() -> Basis:
+  var z: Vector3 = (camera.basis.z * Vector3(1.0, 0.0, 1.0)).normalized()
+  var y: Vector3 = Vector3.UP
+  var x: Vector3 = y.cross(z)
+  return Basis(x, y, z)
 
 func _process(_delta: float) -> void:
   var vector_to_camera: Vector3 = (camera.position - left_hand_tracking.position).normalized()
-  if vector_to_camera.dot(left_hand_tracking.basis.z) > 0.9:
+  if vector_to_camera.dot(left_hand_tracking.basis.z) > 0.8:
     menu_label.visible = true
   else:
     menu_label.visible = false
+
+  if menu_active:
+    var desired_basis := _get_menu_pivot_basis()
+    if menu_pivot.basis.z.dot(desired_basis.z) < 0.9:
+      if menu_pivot_timer.is_stopped():
+        menu_pivot_timer.start()
+    else:
+      menu_pivot_timer.stop()
+
+func _on_menu_pivot_timer_timeout() -> void:
+  var pivot_tween = get_tree().create_tween()
+  var desired_basis := _get_menu_pivot_basis()
+  pivot_tween.tween_method(self._tween_menu_pivot_basis, menu_pivot.basis.get_rotation_quaternion(), desired_basis.get_rotation_quaternion(), 0.9) \
+    .set_trans(Tween.TRANS_EXPO) \
+    .set_ease(Tween.EASE_OUT)
+
+func _tween_menu_pivot_basis(quat: Quaternion) -> void:
+  menu_pivot.basis = Basis(quat)
 
 func _physics_process(delta: float) -> void:
   $XROrigin3D/XRToolsPlayerBody/FootstepPlayer.set_on_floor($XROrigin3D/XRToolsPlayerBody.is_on_floor())

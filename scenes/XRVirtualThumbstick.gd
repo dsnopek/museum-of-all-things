@@ -19,13 +19,9 @@ func setup_virtual_thumbstick(xr_controller: XRController3D, action: String, axi
   var t: Transform3D = _get_controller_transform()
 
   # Flatten the Y axis, so it's level with the ground.
-  var z: Vector3 = t.basis.z
-  z.y = 0.0
-  z = z.normalized()
-  var x: Vector3 = t.basis.x
-  x.y = 0.0
-  x = x.normalized()
-  var y: Vector3 = z.cross(x)
+  var z: Vector3 = (t.basis.z * Vector3(1.0, 0.0, 1.0)).normalized()
+  var y: Vector3 = Vector3.UP
+  var x: Vector3 = y.cross(z)
   t.basis = Basis(x, y, z)
 
   global_transform = t
