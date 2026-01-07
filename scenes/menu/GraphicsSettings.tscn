@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbp0v2aoglhrr"]
+[gd_scene format=3 uid="uid://bbp0v2aoglhrr"]
 
 [ext_resource type="Theme" uid="uid://dgt5fjkytx07d" path="res://assets/resources/menu_theme.tres" id="1_1c701"]
 [ext_resource type="Script" uid="uid://dtoqm3qrwbc3f" path="res://scenes/menu/GraphicsSettings.gd" id="2_lsij7"]
@@ -6,7 +6,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_2yad8"]
 font_size = 64
 
-[node name="GraphicsSettings" type="VBoxContainer"]
+[node name="GraphicsSettings" type="VBoxContainer" unique_id=1076542775]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,35 +16,35 @@ grow_vertical = 2
 theme = ExtResource("1_1c701")
 script = ExtResource("2_lsij7")
 
-[node name="MainOptions" type="VBoxContainer" parent="."]
+[node name="MainOptions" type="VBoxContainer" parent="." unique_id=878368968]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainOptions"]
+[node name="Label" type="Label" parent="MainOptions" unique_id=873332825]
 layout_mode = 2
 text = "Graphics Settings"
 label_settings = SubResource("LabelSettings_2yad8")
 
-[node name="Back" type="Button" parent="MainOptions"]
+[node name="Back" type="Button" parent="MainOptions" unique_id=94753168]
 layout_mode = 2
 text = "Back"
 
-[node name="Restore" type="Button" parent="MainOptions"]
+[node name="Restore" type="Button" parent="MainOptions" unique_id=967857702]
 layout_mode = 2
 text = "Restore Default Settings"
 
-[node name="DisplayOptions" type="VBoxContainer" parent="."]
+[node name="DisplayOptions" type="VBoxContainer" parent="." unique_id=1574654983]
 layout_mode = 2
 
-[node name="Spacer4" type="Label" parent="DisplayOptions"]
+[node name="Spacer4" type="Label" parent="DisplayOptions" unique_id=554109073]
 layout_mode = 2
 text = "
 "
 
-[node name="Label" type="Label" parent="DisplayOptions"]
+[node name="Label" type="Label" parent="DisplayOptions" unique_id=1162060743]
 layout_mode = 2
 text = "Scaling mode"
 
-[node name="ScaleMode" type="OptionButton" parent="DisplayOptions"]
+[node name="ScaleMode" type="OptionButton" parent="DisplayOptions" unique_id=911137923]
 layout_mode = 2
 selected = 0
 item_count = 3
@@ -55,11 +55,11 @@ popup/item_1/id = 1
 popup/item_2/text = "AMD FSR 2"
 popup/item_2/id = 2
 
-[node name="Label2" type="Label" parent="DisplayOptions" groups=["fsr_options"]]
+[node name="Label2" type="Label" parent="DisplayOptions" unique_id=585560176 groups=["fsr_options"]]
 layout_mode = 2
 text = "FSR quality mode"
 
-[node name="FSRQuality" type="OptionButton" parent="DisplayOptions" groups=["fsr_options"]]
+[node name="FSRQuality" type="OptionButton" parent="DisplayOptions" unique_id=509708452 groups=["fsr_options"]]
 layout_mode = 2
 selected = 0
 item_count = 5
@@ -74,153 +74,153 @@ popup/item_3/id = 3
 popup/item_4/text = "Ultra performance"
 popup/item_4/id = 4
 
-[node name="Label3" type="Label" parent="DisplayOptions" groups=["fsr_options"]]
+[node name="Label3" type="Label" parent="DisplayOptions" unique_id=789925888 groups=["fsr_options"]]
 layout_mode = 2
 text = "FSR Sharpness"
 
-[node name="SharpnessScale" type="HSlider" parent="DisplayOptions" groups=["fsr_options"]]
+[node name="SharpnessScale" type="HSlider" parent="DisplayOptions" unique_id=795772371 groups=["fsr_options"]]
 layout_mode = 2
 max_value = 2.0
 step = 0.05
 value = 0.2
 
-[node name="SharpnessScaleValue" type="Label" parent="DisplayOptions" groups=["fsr_options"]]
+[node name="SharpnessScaleValue" type="Label" parent="DisplayOptions" unique_id=633606641 groups=["fsr_options"]]
 layout_mode = 2
 text = "0.2
 "
 horizontal_alignment = 1
 
-[node name="Label4" type="Label" parent="DisplayOptions"]
+[node name="Label4" type="Label" parent="DisplayOptions" unique_id=1298392888]
 layout_mode = 2
 text = "Render Scale"
 
-[node name="RenderScale" type="HSlider" parent="DisplayOptions"]
+[node name="RenderScale" type="HSlider" parent="DisplayOptions" unique_id=1901858427]
 layout_mode = 2
 min_value = 0.1
 max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="RenderScaleValue" type="Label" parent="DisplayOptions"]
+[node name="RenderScaleValue" type="Label" parent="DisplayOptions" unique_id=795105446]
 layout_mode = 2
 text = "100 %
 "
 horizontal_alignment = 1
 
-[node name="Fullscreen" type="CheckBox" parent="DisplayOptions"]
+[node name="Fullscreen" type="CheckBox" parent="DisplayOptions" unique_id=63601578]
 layout_mode = 2
 text = "Fullscreen"
 
-[node name="ReflectionOptions" type="VBoxContainer" parent="."]
+[node name="ReflectionOptions" type="VBoxContainer" parent="." unique_id=1756132865]
 layout_mode = 2
 
-[node name="Spacer4" type="Label" parent="ReflectionOptions"]
+[node name="Spacer4" type="Label" parent="ReflectionOptions" unique_id=39755277]
 layout_mode = 2
 text = "
 "
 
-[node name="Label2" type="Label" parent="ReflectionOptions"]
+[node name="Label2" type="Label" parent="ReflectionOptions" unique_id=1417349086]
 layout_mode = 2
 text = "Reflection Quality"
 
-[node name="ReflectionQuality" type="HSlider" parent="ReflectionOptions"]
+[node name="ReflectionQuality" type="HSlider" parent="ReflectionOptions" unique_id=1211064198]
 layout_mode = 2
 max_value = 512.0
 step = 16.0
 value = 256.0
 rounded = true
 
-[node name="ReflectionQualityValue" type="Label" parent="ReflectionOptions"]
+[node name="ReflectionQualityValue" type="Label" parent="ReflectionOptions" unique_id=783615391]
 layout_mode = 2
 text = "256"
 horizontal_alignment = 1
 
-[node name="EnableReflections" type="CheckBox" parent="ReflectionOptions"]
+[node name="EnableReflections" type="CheckBox" parent="ReflectionOptions" unique_id=844535104]
 layout_mode = 2
 button_pressed = true
 text = "Enable Reflections"
 
-[node name="LightOptions" type="VBoxContainer" parent="."]
+[node name="LightOptions" type="VBoxContainer" parent="." unique_id=1491012312]
 layout_mode = 2
 
-[node name="Spacer" type="Label" parent="LightOptions"]
+[node name="Spacer" type="Label" parent="LightOptions" unique_id=693705035]
 layout_mode = 2
 text = "
 "
 
-[node name="Label2" type="Label" parent="LightOptions"]
+[node name="Label2" type="Label" parent="LightOptions" unique_id=188572767]
 layout_mode = 2
 text = "Ambient Light Level"
 
-[node name="AmbientLight" type="HSlider" parent="LightOptions"]
+[node name="AmbientLight" type="HSlider" parent="LightOptions" unique_id=1355422799]
 layout_mode = 2
 max_value = 1.0
 step = 0.05
 value = 0.2
 
-[node name="AmbientLightValue" type="Label" parent="LightOptions"]
+[node name="AmbientLightValue" type="Label" parent="LightOptions" unique_id=1038124679]
 layout_mode = 2
 text = "0.2"
 horizontal_alignment = 1
 
-[node name="EnableSSIL" type="CheckBox" parent="LightOptions"]
+[node name="EnableSSIL" type="CheckBox" parent="LightOptions" unique_id=1577952599]
 layout_mode = 2
 text = "Enable Indirect Lighting (SSIL)"
 
-[node name="RenderDistanceOptions" type="VBoxContainer" parent="."]
+[node name="RenderDistanceOptions" type="VBoxContainer" parent="." unique_id=2015826106]
 layout_mode = 2
 
-[node name="Spacer" type="Label" parent="RenderDistanceOptions"]
+[node name="Spacer" type="Label" parent="RenderDistanceOptions" unique_id=1480756535]
 layout_mode = 2
 text = "
 "
 
-[node name="Label3" type="Label" parent="RenderDistanceOptions"]
+[node name="Label3" type="Label" parent="RenderDistanceOptions" unique_id=2045146049]
 layout_mode = 2
 text = "Render Distance"
 
-[node name="RenderDistance" type="HSlider" parent="RenderDistanceOptions"]
+[node name="RenderDistance" type="HSlider" parent="RenderDistanceOptions" unique_id=697640616]
 layout_mode = 2
 min_value = 0.5
 max_value = 5.0
 step = 0.5
 value = 1.5
 
-[node name="RenderDistanceValue" type="Label" parent="RenderDistanceOptions"]
+[node name="RenderDistanceValue" type="Label" parent="RenderDistanceOptions" unique_id=138491136]
 layout_mode = 2
 text = "x1"
 horizontal_alignment = 1
 
-[node name="FogOptions" type="VBoxContainer" parent="."]
+[node name="FogOptions" type="VBoxContainer" parent="." unique_id=2064147980]
 layout_mode = 2
 
-[node name="Spacer3" type="Label" parent="FogOptions"]
+[node name="Spacer3" type="Label" parent="FogOptions" unique_id=1130763457]
 layout_mode = 2
 text = "
 "
 
-[node name="Label5" type="Label" parent="FogOptions"]
+[node name="Label5" type="Label" parent="FogOptions" unique_id=630588837]
 layout_mode = 2
 text = "Fog"
 
-[node name="EnableFog" type="CheckBox" parent="FogOptions"]
+[node name="EnableFog" type="CheckBox" parent="FogOptions" unique_id=1881727840]
 layout_mode = 2
 button_pressed = true
 text = "Enable Fog"
 
-[node name="FPSOptions" type="VBoxContainer" parent="."]
+[node name="FPSOptions" type="VBoxContainer" parent="." unique_id=1427025860]
 layout_mode = 2
 
-[node name="Spacer2" type="Label" parent="FPSOptions"]
+[node name="Spacer2" type="Label" parent="FPSOptions" unique_id=1463055489]
 layout_mode = 2
 text = "
 "
 
-[node name="Label4" type="Label" parent="FPSOptions"]
+[node name="Label4" type="Label" parent="FPSOptions" unique_id=463185417]
 layout_mode = 2
 text = "Maximum FPS"
 
-[node name="MaxFPS" type="HSlider" parent="FPSOptions"]
+[node name="MaxFPS" type="HSlider" parent="FPSOptions" unique_id=2038737308]
 layout_mode = 2
 min_value = 20.0
 max_value = 240.0
@@ -228,32 +228,32 @@ step = 5.0
 value = 60.0
 rounded = true
 
-[node name="MaxFPSValue" type="Label" parent="FPSOptions"]
+[node name="MaxFPSValue" type="Label" parent="FPSOptions" unique_id=2089967332]
 layout_mode = 2
 text = "60"
 horizontal_alignment = 1
 
-[node name="VSync" type="CheckBox" parent="FPSOptions"]
+[node name="VSync" type="CheckBox" parent="FPSOptions" unique_id=276133681]
 layout_mode = 2
 text = "Enable V-Sync"
 
-[node name="LimitFPS" type="CheckBox" parent="FPSOptions"]
+[node name="LimitFPS" type="CheckBox" parent="FPSOptions" unique_id=1611969589]
 layout_mode = 2
 text = "Limit FPS"
 
-[node name="PostProcessingOptions" type="VBoxContainer" parent="."]
+[node name="PostProcessingOptions" type="VBoxContainer" parent="." unique_id=1296802604]
 layout_mode = 2
 
-[node name="Spacer3" type="Label" parent="PostProcessingOptions"]
+[node name="Spacer3" type="Label" parent="PostProcessingOptions" unique_id=1404014827]
 layout_mode = 2
 text = "
 "
 
-[node name="Label5" type="Label" parent="PostProcessingOptions"]
+[node name="Label5" type="Label" parent="PostProcessingOptions" unique_id=928481446]
 layout_mode = 2
 text = "Post-Processing Effect"
 
-[node name="PostProcessingEffect" type="OptionButton" parent="PostProcessingOptions"]
+[node name="PostProcessingEffect" type="OptionButton" parent="PostProcessingOptions" unique_id=283110375]
 layout_mode = 2
 selected = 0
 item_count = 2

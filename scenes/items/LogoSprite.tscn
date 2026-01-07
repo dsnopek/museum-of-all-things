@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://gb0hi6hfnjyo"]
+[gd_scene format=3 uid="uid://gb0hi6hfnjyo"]
 
-[ext_resource type="Texture2D" uid="uid://ccsvrkan42fc6" path="res://assets/logo/moat_logo_large_no_sub.png" id="1_81xlm"]
+[ext_resource type="Texture2D" uid="uid://crmsq8a4sjtb8" path="res://assets/logo/moat_logo_large.png" id="1_81xlm"]
 [ext_resource type="FontFile" uid="uid://cbryppjjel0go" path="res://assets/fonts/CormorantGaramond/CormorantGaramond-Medium.ttf" id="2_81xlm"]
 
-[node name="LogoSprite" type="Node3D"]
+[node name="LogoSprite" type="Node3D" unique_id=614047320]
 
-[node name="Logo" type="Sprite3D" parent="."]
+[node name="Logo" type="Sprite3D" parent="." unique_id=1552992501]
 shaded = true
 double_sided = false
 texture = ExtResource("1_81xlm")
 
-[node name="Subtitle" type="Label3D" parent="."]
+[node name="Subtitle" type="Label3D" parent="." unique_id=154061781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.763, 0)
 shaded = true
 double_sided = false
